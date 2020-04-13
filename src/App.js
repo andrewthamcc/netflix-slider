@@ -26,6 +26,9 @@ export class App extends Component {
 
     return (
       <div className="App">
+        <h1 className="App-title">
+          <span>Netflix</span> Slider
+        </h1>
         <Slider movies={movies} />
       </div>
     );
