@@ -5,16 +5,15 @@ import SliderItem from "./slider-item";
 require("./style.scss");
 
 export class slider extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
-      sliderHasMoved: false,
-      sliderMoveDirection: null,
-      sliderMoving: false,
-      movePercentage: 0,
-      lowestVisibleIndex: 0,
-      itemsInRow: 5,
-      totalItems: 0,
+      sliderHasMoved: false, // boolean tracking if slider has moved from its initial position
+      sliderMoveDirection: null, // direction of movement of slider
+      sliderMoving: false, // boolean for animation of slider
+      movePercentage: 0, // amount to offset slider
+      lowestVisibleIndex: 0, // lowest visible index of slider items
+      itemsInRow: 5, // number of items to be displayed across screen
     };
   }
 
@@ -84,19 +83,20 @@ export class slider extends Component {
         combinedIndex[combinedIndex.length - 1] === totalItems - 1
           ? 0
           : combinedIndex[combinedIndex.length - 1] + 1;
-      const leadingIndex =
-        combinedIndex[0] === 0 ? totalItems - 1 : combinedIndex[0] - 1;
 
-      combinedIndex.unshift(leadingIndex);
       combinedIndex.push(trailingIndex);
     }
+
+    const leadingIndex =
+      combinedIndex[0] === 0 ? totalItems - 1 : combinedIndex[0] - 1;
+    combinedIndex.unshift(leadingIndex);
 
     const sliderContents = [];
     for (let index of combinedIndex) {
       sliderContents.push(
         <SliderItem
           movie={movies[index]}
-          key={movies[index].id}
+          key={`${movies[index].id}-${index}`}
           width={100 / itemsInRow}
         />
       );
@@ -219,10 +219,12 @@ export class slider extends Component {
     } = this.state;
     const { movies } = this.props;
 
+    // return null if movies are not loaded
     if (!movies.length) {
       return null;
     }
 
+    // style object to determine movement of slider
     let style = {};
     if (sliderMoving) {
       let translate = "";
@@ -249,11 +251,10 @@ export class slider extends Component {
         {sliderHasMoved && (
           <SliderControl arrowDirection={"left"} onClick={this.handlePrev} />
         )}
-        <div className="slider-mask">
-          <div className="slider-content" style={style}>
-            {this.renderSliderContent()}
-          </div>
+        <div className="slider-content" style={style}>
+          {this.renderSliderContent()}
         </div>
+
         <SliderControl arrowDirection={"right"} onClick={this.handleNext} />
       </div>
     );

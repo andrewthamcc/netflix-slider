@@ -89,7 +89,7 @@ const Slider = (props) => {
       sliderContents.push(
         <SliderItem
           movie={movies[index]}
-          key={movies[index].id}
+          key={`${movies[index].id}-${index}`}
           width={100 / itemsInRow}
         />
       );
@@ -203,10 +203,8 @@ const Slider = (props) => {
       {sliderHasMoved && (
         <SliderControl arrowDirection={"left"} onClick={handlePrev} />
       )}
-      <div className="slider-mask">
-        <div className="slider-content" style={style}>
-          {renderSliderContent()}
-        </div>
+      <div className="slider-content" style={style}>
+        {renderSliderContent()}
       </div>
       <SliderControl arrowDirection={"right"} onClick={handleNext} />
     </div>

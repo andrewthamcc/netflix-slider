@@ -1,5 +1,5 @@
 .slider-item {
-  padding: 0 2px;
+  padding: 0 4px;
   display: inline-block;
 
   &-image {
@@ -14,10 +14,10 @@
   &:last-of-type {
     padding-right: 0;
   }
-}
 
-img {
-  display: block;
-  width: 100%;
-  max-width: 100%;
+  img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+  }
 }

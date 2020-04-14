@@ -2,9 +2,7 @@ import React from "react";
 
 require("./style.scss");
 
-const SliderItem = (props) => {
-  const { movie, width } = props;
-
+const SliderItem = ({ movie, width }) => {
   return (
     <div className="slider-item" style={{ width: `${width}%` }}>
       <img
