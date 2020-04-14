@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import SliderControl from "./slider-control";
 import SliderItem from "./slider-item";
 
+require("./style.scss");
+
 export class slider extends Component {
   constructor(props) {
     super(props);
@@ -73,12 +75,21 @@ export class slider extends Component {
       }
     }
 
-    // console.log("left", left);
-    // console.log("mid", mid);
-    // console.log("right", right);
-
     // combine left, mid, right to have all indexes
     const combinedIndex = [...left, ...mid, ...right];
+
+    // add on leading and trailing indexes for peek image when sliding
+    if (sliderHasMoved) {
+      const trailingIndex =
+        combinedIndex[combinedIndex.length - 1] === totalItems - 1
+          ? 0
+          : combinedIndex[combinedIndex.length - 1] + 1;
+      const leadingIndex =
+        combinedIndex[0] === 0 ? totalItems - 1 : combinedIndex[0] - 1;
+
+      combinedIndex.unshift(leadingIndex);
+      combinedIndex.push(trailingIndex);
+    }
 
     const sliderContents = [];
     for (let index of combinedIndex) {
@@ -143,9 +154,9 @@ export class slider extends Component {
         setTimeout(() => {
           this.setState({
             lowestVisibleIndex: newIndex,
-            sliderMving: false,
+            sliderMoving: false,
             sliderMoveDirection: null,
-            // newMovePercentage: 0,
+            newMovePercentage: 0,
           });
         }, 750);
       }
@@ -185,9 +196,9 @@ export class slider extends Component {
         setTimeout(() => {
           this.setState({
             lowestVisibleIndex: newIndex,
-            sliderMving: false,
+            sliderMoving: false,
             sliderMoveDirection: null,
-            // movePercentage: 0,
+            movePercentage: 0,
           });
         }, 750);
       }

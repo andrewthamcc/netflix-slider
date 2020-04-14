@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import Slider from "./components/slider";
-import Slider2 from "./components/slider/slider.js";
+import Slider from "./components/slider/slider.js";
 import apiKey from "./utils/key";
 
 require("./scss/App.scss");
@@ -15,7 +14,7 @@ export class App extends Component {
 
   async componentDidMount() {
     const res = await fetch(
-      `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}`
+      `https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}`
     );
     const data = await res.json();
 
@@ -31,7 +30,6 @@ export class App extends Component {
           <span>Netflix</span> Slider
         </h1>
         <Slider movies={movies} />
-        {/* <Slider2 movies={movies} /> */}
       </div>
     );
   }
