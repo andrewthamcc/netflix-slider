@@ -46,19 +46,11 @@ const Slider = (props) => {
     for (let i = 0; i < itemsInRow; i++) {
       // left
       if (sliderHasMoved) {
-        if (i + lowestVisibleIndex - itemsInRow < 0) {
-          left.push(totalItems - itemsInRow + i);
+        if (lowestVisibleIndex + i - itemsInRow < 0) {
+          left.push(totalItems - itemsInRow + lowestVisibleIndex + i);
         } else {
-          left.push(i + lowestVisibleIndex - itemsInRow);
+          left.push(i + lowestVisibleIndex - itemsInRow); // issue here
         }
-      } else {
-        left.push(
-          <div
-            className="slider-item"
-            style={{ width: `${100 / itemsInRow}%` }}
-            key={i}
-          />
-        );
       }
 
       // mid
@@ -77,9 +69,7 @@ const Slider = (props) => {
     }
 
     // combine indexes
-    const indexToDisplay = sliderHasMoved
-      ? [...left, ...mid, ...right]
-      : [...mid, ...right];
+    const indexToDisplay = [...left, ...mid, ...right];
 
     // add on leading and trailing indexes for peek image when sliding
     if (sliderHasMoved) {
@@ -105,9 +95,17 @@ const Slider = (props) => {
       );
     }
 
-    // stack empty slider items when slider has not moved
+    // adds empty divs to take up appropriate spacing when slider at initial position
     if (!sliderHasMoved) {
-      sliderContents.unshift(...left);
+      for (let i = 0; i < itemsInRow; i++) {
+        sliderContents.unshift(
+          <div
+            className="slider-item"
+            style={{ width: `${100 / itemsInRow}%` }}
+            key={i}
+          />
+        );
+      }
     }
 
     return sliderContents;
@@ -174,7 +172,9 @@ const Slider = (props) => {
     }, 750);
 
     // slider has moved and show the previous arrow
-    setSliderHasMoved(true);
+    if (!sliderHasMoved) {
+      setSliderHasMoved(true);
+    }
   };
 
   let style = {};
